@@ -4,7 +4,6 @@ const fs = require('fs');
 
 var currentCount =  "2017-01-01T00:00:00.000000+03:00"
 var p=0; var p2=0;
-var end = +new Date(currentCount)+86400000*10
    
    
 function piv(){  
@@ -25,9 +24,9 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 			dataset.forEach(function(item) {
 				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
-var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'				
-console.log(res)				
-/*					
+//var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'				
+//console.log(res)				
+					
 db.serialize(function() {
 
   // Create new table
@@ -38,12 +37,12 @@ db.serialize(function() {
   var statement = db.prepare("INSERT INTO data VALUES (?,?)");	
 	
  // statement.run( res);
-  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id);	
+  statement.run("hi","hi!");	
   statement.finalize();
 	
 });
 
-*/
+
 					
 					
 					

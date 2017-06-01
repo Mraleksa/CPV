@@ -46,7 +46,7 @@ db.serialize(function() {
   
   statement.run(data.getJSON().data.contractID,data.getJSON().data.contractID);
  
- console.log(data.getJSON().data.items[0].classification.id)
+ console.log(data.getJSON().data.contractID)
   //else none;
   
   statement.finalize();

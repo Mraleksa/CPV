@@ -1,9 +1,10 @@
 var client = require('http-api-client');
 const fs = require('fs');
-
+var sqlite3 = require("sqlite3").verbose();
 
 var currentCount =  "2017-01-01T00:00:00.000000+03:00"
 var p=0; var p2=0;
+var end = +new Date(currentCount)+86400000*10
    
    
 function piv(){  
@@ -24,33 +25,37 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 			dataset.forEach(function(item) {
 				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
-//var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'				
-//console.log(res)				
-					
+				
+/*				
+var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'
+//console.log(res);
+//console.log(data.getJSON().data.items[0].description.classification.id);
+fs.appendFile("test.json", res);
+*/
 
-					
+ // Open a database handle
+var db = new sqlite3.Database("data.sqlite");
 db.serialize(function() {
 
   // Create new table
-  db.run("CREATE TABLE IF NOT EXISTS data (name TEXT,value INT)");
+  db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT)");
 
   
   // Insert a new record
   var statement = db.prepare("INSERT INTO data VALUES (?,?)");
-  var res = Math.round(Math.random()*100);
-  if(res>60){statement.run("груша яблоко",res);}
+  
+  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id);
+ 
+ console.log(data.getJSON().data.items[0].classification.id)
   //else none;
   
   statement.finalize();
 });
 
-					
-					
 
 
-					
-					
-					
+
+			
 					})
 					.catch(function  (error) {
 						console.log("error_detale")
@@ -88,5 +93,6 @@ db.serialize(function() {
 
 piv ();	
  
+
    
 //node_modules\http-api-client

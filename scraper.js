@@ -1,18 +1,15 @@
 var client = require('http-api-client');
-var sqlite3 = require("sqlite3").verbose();
-
-// Open a database handle
-var db = new sqlite3.Database("data.sqlite");
+const fs = require('fs');
 
 
-	
-var currentCount =  "2017-05-27T13:53:03.472019+03:00"
+var currentCount =  "2017-01-01T00:00:00.000000+03:00"
 var p=0; var p2=0;
+var end = +new Date(currentCount)+86400000*10
    
    
 function piv(){  
 p++;
-client.request({url: 'https://public.api.openprocurement.org/api/2.3/plans?offset='+currentCount})
+client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?offset='+currentCount})
 		.then(function (data) {
 						 
 		
@@ -26,33 +23,22 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/plans?offse
 		.then(function (dataset) {	
 		
 			dataset.forEach(function(item) {
-				client.request({url: 'https://public.api.openprocurement.org/api/0/plans/'+item.id})
+				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
-/*
-var res = '{
-"id":"'+data.getJSON().data.id+'",
-"datePublished":"'+data.getJSON().data.datePublished+'",
-"cpv":"'+data.getJSON().data.classification.id+'",
-"name":"'+data.getJSON().data.procuringEntity.identifier.id+'", 
-"amount":'+data.getJSON().data.budget.amount+', 
-"currency":"'+data.getJSON().data.budget.currency+'", 
-"procurementMethod":"'+data.getJSON().data.tender.procurementMethod+'",
-"procurementMethodType":"'+data.getJSON().data.tender.procurementMethodType+'",
-"startDate":"'+data.getJSON().data.tender.tenderPeriod.startDate+'"},'
-*/					
+//var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'				
 				
 					
 db.serialize(function() {
 
   // Create new table
  //db.run("CREATE TABLE IF NOT EXISTS data (id TEXT)");
- db.run("CREATE TABLE IF NOT EXISTS data (id TEXT,datePublished TEXT,cpv TEXT,name TEXT,amount INT,currency TEXT,procurementMethod TEXT,procurementMethodType TEXT,startDate TEXT)");						
+ db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT)");						
 						 // Insert a new record
   //var statement = db.prepare("INSERT INTO data(id) VALUES (?)");
-  var statement = db.prepare("INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?)");	
+  var statement = db.prepare("INSERT INTO data VALUES (?,?)");	
 	
  // statement.run( res);
-  statement.run(data.getJSON().data.id,data.getJSON().data.datePublished,data.getJSON().data.classification.id,data.getJSON().data.procuringEntity.identifier.id,data.getJSON().data.budget.amount,data.getJSON().data.budget.currency,data.getJSON().data.tender.procurementMethod,data.getJSON().data.tender.procurementMethodType,data.getJSON().data.tender.tenderPeriod.startDate);	
+  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id);	
   statement.finalize();
 	
 });
@@ -65,7 +51,7 @@ db.serialize(function() {
 		
 		})
 		.then(function () {	
-		if (p<10){piv ();}		
+		if (p<2){piv ();}		
 		else {
 			console.log("stop")
 				p=0;
@@ -73,7 +59,7 @@ db.serialize(function() {
 				console.log(p2)
 			setTimeout(function() {
 			
-				if (p2 < 5) {
+				if (p2 < 1) {
 					piv ();
 				}
 				else {console.log("STOP")}

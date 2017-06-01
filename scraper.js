@@ -27,20 +27,25 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 //var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'				
 //console.log(res)				
 					
+
+					
 db.serialize(function() {
 
   // Create new table
- //db.run("CREATE TABLE IF NOT EXISTS data (id TEXT)");
- db.run("CREATE TABLE IF NOT EXISTS data (id TEXT,datePublished INT)");						
-						 // Insert a new record
-  //var statement = db.prepare("INSERT INTO data(id) VALUES (?)");
-  var statement = db.prepare("INSERT INTO data VALUES (?,?)");	
-	
- // statement.run( res);
-  statement.run("ff",Math.round(Math.random()*100));	
+  db.run("CREATE TABLE IF NOT EXISTS data (name TEXT,value INT)");
+
+  
+  // Insert a new record
+  var statement = db.prepare("INSERT INTO data VALUES (?,?)");
+  var res = Math.round(Math.random()*100);
+  if(res>60){statement.run("груша яблоко",res);}
+  //else none;
+  
   statement.finalize();
-	
 });
+
+					
+					
 
 
 					

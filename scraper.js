@@ -31,13 +31,13 @@ db.serialize(function() {
 
   // Create new table
  //db.run("CREATE TABLE IF NOT EXISTS data (id TEXT)");
- db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT)");						
+ db.run("CREATE TABLE IF NOT EXISTS data (id TEXT,datePublished INT)");						
 						 // Insert a new record
   //var statement = db.prepare("INSERT INTO data(id) VALUES (?)");
   var statement = db.prepare("INSERT INTO data VALUES (?,?)");	
 	
  // statement.run( res);
-  statement.run("hi","hi!");	
+  statement.run("ff",Math.round(Math.random()*100));	
   statement.finalize();
 	
 });

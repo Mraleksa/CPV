@@ -5,7 +5,7 @@ var sqlite3 = require("sqlite3").verbose();
 // Open a database handle
 var db = new sqlite3.Database("data.sqlite");
 
-var currentCount =  "2017-01-02T18:02:00.391786+02:00"
+var currentCount =  "2017-02-13T09:55:30.152174+02:00"
 var p=0; var p2=0;
    
    

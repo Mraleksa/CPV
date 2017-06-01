@@ -2,9 +2,11 @@ var client = require('http-api-client');
 const fs = require('fs');
 var sqlite3 = require("sqlite3").verbose();
 
+// Open a database handle
+var db = new sqlite3.Database("data.sqlite");
+
 var currentCount =  "2017-01-01T00:00:00.000000+03:00"
 var p=0; var p2=0;
-var end = +new Date(currentCount)+86400000*10
    
    
 function piv(){  
@@ -33,8 +35,6 @@ var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.g
 fs.appendFile("test.json", res);
 */
 
- // Open a database handle
-var db = new sqlite3.Database("data.sqlite");
 db.serialize(function() {
 
   // Create new table

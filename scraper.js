@@ -44,7 +44,7 @@ db.serialize(function() {
   // Insert a new record
   var statement = db.prepare("INSERT INTO data VALUES (?,?)");
   
-  statement.run(data.getJSON().data.contractID,data.getJSON().data.contractID);
+  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id);
  
 // console.log(data.getJSON().data.contractID)
   //else none;

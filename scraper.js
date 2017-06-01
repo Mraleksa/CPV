@@ -40,8 +40,13 @@ db.serialize(function() {
  // statement.run( res);
   statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id);	
   statement.finalize();
-*/	
+	
 });
+
+*/
+					
+					
+					
 					})
 					.catch(function  (error) {
 						console.log("error_detale")

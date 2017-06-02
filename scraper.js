@@ -5,7 +5,7 @@ var sqlite3 = require("sqlite3").verbose();
 // Open a database handle
 var db = new sqlite3.Database("data.sqlite");
 
-var currentCount =  "2017-02-13T09:55:30.152174+02:00"
+var currentCount =  "2017-05-04T11:50:31.435826+03:00"
 var p=0; var p2=0;
    
    
@@ -73,7 +73,7 @@ db.serialize(function() {
 				console.log(p2)
 			setTimeout(function() {
 			
-				if (p2 < 200) {
+				if (p2 < 100) {
 					piv ();
 				}
 				else {console.log("STOP")}

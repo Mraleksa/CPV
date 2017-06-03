@@ -8,7 +8,25 @@ var db = new sqlite3.Database("data.sqlite");
 var currentCount =  "2017-05-04T11:50:31.435826+03:00"
 var p=0; var p2=0;
    
-   
+db.serialize(function() {
+
+  // Create new table
+  db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT)");
+
+  
+  // Insert a new record
+  var statement = db.prepare("INSERT INTO data VALUES (?,?)");
+  
+  statement.run("Дихельне пальне","95");
+ 
+// console.log(data.getJSON().data.contractID)
+  //else none;
+  
+  statement.finalize();
+});
+
+
+   /*
 function piv(){  
 p++;
 client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?offset='+currentCount})
@@ -28,12 +46,7 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
 				
-/*				
-var res = '{"key":"'+data.getJSON().data.items[0].description+'","cpv":"'+data.getJSON().data.items[0].classification.id+'"},'
-//console.log(res);
-//console.log(data.getJSON().data.items[0].description.classification.id);
-fs.appendFile("test.json", res);
-*/
+
 
 db.serialize(function() {
 
@@ -65,7 +78,7 @@ db.serialize(function() {
 		
 		})
 		.then(function () {	
-		if (p<10){piv ();}		
+		if (p<2){piv ();}		
 		else {
 			console.log("stop")
 				p=0;
@@ -73,7 +86,7 @@ db.serialize(function() {
 				console.log(p2)
 			setTimeout(function() {
 			
-				if (p2 < 50) {
+				if (p2 < 2) {
 					piv ();
 				}
 				else {console.log("STOP")}
@@ -93,6 +106,6 @@ db.serialize(function() {
 
 piv ();	
  
-
+*/
    
 //node_modules\http-api-client

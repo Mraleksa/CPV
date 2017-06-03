@@ -17,7 +17,7 @@ db.serialize(function() {
   // Insert a new record
   var statement = db.prepare("INSERT INTO data VALUES (?,?)");
   
-  statement.run("Дихельне пальне","95");
+  statement.run("Дихельне пальне!","95");
  
 // console.log(data.getJSON().data.contractID)
   //else none;

@@ -8,25 +8,10 @@ var db = new sqlite3.Database("data.sqlite");
 var currentCount =  "2017-05-04T11:50:31.435826+03:00"
 var p=0; var p2=0;
    
-db.serialize(function() {
-
-  // Create new table
-  db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT)");
-
-  
-  // Insert a new record
-  var statement = db.prepare("INSERT INTO data VALUES (?,?)");
-  
-  statement.run("Дихельне пальне!","95");
- 
-// console.log(data.getJSON().data.contractID)
-  //else none;
-  
-  statement.finalize();
-});
 
 
-   /*
+
+
 function piv(){  
 p++;
 client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?offset='+currentCount})
@@ -106,6 +91,6 @@ db.serialize(function() {
 
 piv ();	
  
-*/
+
    
 //node_modules\http-api-client

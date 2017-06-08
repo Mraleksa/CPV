@@ -5,7 +5,7 @@ var sqlite3 = require("sqlite3").verbose();
 // Open a database handle
 var db = new sqlite3.Database("data.sqlite");
 
-var currentCount =  "2017-05-16T08:49:59.196730+03:00"
+var currentCount =  "2017-05-17T08:49:59.196730+03:00"
 var p=0; var p2=0;
    
 
@@ -36,16 +36,17 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 db.serialize(function() {
 
   // Create new table
-  db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT)");
+  db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT,name TEXT,contactPoint TEXT,contractID TEXT)");
 
   
   // Insert a new record
-  var statement = db.prepare("INSERT INTO data VALUES (?,?)");
+  var statement = db.prepare("INSERT INTO data VALUES (?,?,?,?,?)");
   
-  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id);
+  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id,
+  data.getJSON().data.suppliers[0].name,data.getJSON().data.suppliers[0].contactPoint.email,data.getJSON().data.contractID);
+
  
-// console.log(data.getJSON().data.contractID)
-  //else none;
+
   
   statement.finalize();
 });
@@ -71,7 +72,7 @@ db.serialize(function() {
 				console.log(p2)
 			setTimeout(function() {
 			
-				if (p2 < 50) {
+				if (p2 < 3) {
 					piv ();
 				}
 				else {console.log("STOP")}

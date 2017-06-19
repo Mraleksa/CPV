@@ -7,53 +7,27 @@ var db = new sqlite3.Database("data.sqlite");
 
 var currentCount =  "2017-05-05T08:25:45.918231+03:00"
 var p=0; var p2=0;
-   
-
-
-
-
+ 
 function piv(){  
 p++;
 client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?offset='+currentCount})
 		.then(function (data) {
-						 
-		
-			var dataset = data.getJSON().data;
-			
+			var dataset = data.getJSON().data;			
 			currentCount = data.getJSON().next_page.offset;			
-			console.log(currentCount)
-			
+			console.log(currentCount)			
 			return dataset;
 		})	
-		.then(function (dataset) {	
-		
+		.then(function (dataset) {			
 			dataset.forEach(function(item) {
 				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
-				
-
-
 db.serialize(function() {
-
-  // Create new table
-  db.run("CREATE TABLE IF NOT EXISTS data (key TEXT,cpv TEXT,name TEXT,contactPoint TEXT,contractID TEXT)");
-
-  
-  // Insert a new record
-  var statement = db.prepare("INSERT INTO data VALUES (?,?,?,?,?)");
-  
-  statement.run(data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id,
-  data.getJSON().data.suppliers[0].name,data.getJSON().data.suppliers[0].contactPoint.email,data.getJSON().data.contractID);
-
- 
-
-  
-  statement.finalize();
+db.run("CREATE TABLE IF NOT EXISTS data (dateModified TEXT,key TEXT,cpv TEXT,name TEXT,contactPoint TEXT,contractID TEXT)");
+var statement = db.prepare("INSERT INTO data VALUES (?,?,?,?,?,?)");
+statement.run(item.dateModified,data.getJSON().data.items[0].description,data.getJSON().data.items[0].classification.id,
+data.getJSON().data.suppliers[0].name,data.getJSON().data.suppliers[0].contactPoint.email,data.getJSON().data.contractID);
+statement.finalize();
 });
-
-
-
-
 			
 					})
 					.catch(function  (error) {
@@ -64,7 +38,7 @@ db.serialize(function() {
 		
 		})
 		.then(function () {	
-		if (p<10){piv ();}		
+		if (p<1){piv ();}		
 		else {
 			console.log("stop")
 				p=0;
@@ -72,7 +46,7 @@ db.serialize(function() {
 				console.log(p2)
 			setTimeout(function() {
 			
-				if (p2 < 100) {
+				if (p2 < 1) {
 					piv ();
 				}
 				else {console.log("STOP")}
@@ -85,13 +59,6 @@ db.serialize(function() {
 		piv ();
 		});   
 		
-		
-			
-
 }
 
 piv ();	
- 
-
-   
-//node_modules\http-api-client

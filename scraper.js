@@ -6,7 +6,7 @@ var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("data.sqlite");
 
 var currentCount =  "2017-05-05T09:59:03.623987+03:00"
-var p=0; var p2=0;var changes;
+var p=0; var p2=0;var changes; var description;
  
 function piv(){  
 p++;
@@ -27,7 +27,7 @@ changes= data.getJSON().data.changes.length;
 } catch (err) {
 changes =0;
 }
-var description = data.getJSON().data.items[0].description.toLowerCase();					
+description = data.getJSON().data.items[0].description.toLowerCase();					
 db.serialize(function() {
 db.run("CREATE TABLE IF NOT EXISTS data (dateModified TEXT,description TEXT,cpv TEXT,winner TEXT,winnerEdr TEXT,winnerRegion TEXT,changes TEXT,value INT,contactPoint TEXT,contractID TEXT)");
 var statement = db.prepare("INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?,?)");

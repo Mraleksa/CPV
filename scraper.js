@@ -21,7 +21,7 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 			dataset.forEach(function(item) {
 				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
-					
+console.log(data.getJSON().data.changes.length)					
 var description = data.getJSON().data.items[0].description.toLowerCase();					
 db.serialize(function() {
 db.run("CREATE TABLE IF NOT EXISTS data (dateModified TEXT,description TEXT,cpv TEXT,winner TEXT,winnerEdr TEXT,winnerRegion TEXT,changes TEXT,value INT,contactPoint TEXT,contractID TEXT)");

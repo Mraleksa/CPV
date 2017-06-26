@@ -6,7 +6,7 @@ var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("data.sqlite");
 
 var currentCount =  "2017-05-05T09:59:03.623987+03:00"
-var p=0; var p2=0;
+var p=0; var p2=0;var changes;
  
 function piv(){  
 p++;
@@ -21,15 +21,18 @@ client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts?o
 			dataset.forEach(function(item) {
 				client.request({url: 'https://public.api.openprocurement.org/api/2.3/contracts/'+item.id})
 					.then(function (data) {
-console.log(data.getJSON().data.changes.length)					
+//console.log(data.getJSON().data.changes.length)	
+try {
+changes= data.getJSON().data.changes.length;
+} catch (err) {
+changes =0;
+}
 var description = data.getJSON().data.items[0].description.toLowerCase();					
 db.serialize(function() {
 db.run("CREATE TABLE IF NOT EXISTS data (dateModified TEXT,description TEXT,cpv TEXT,winner TEXT,winnerEdr TEXT,winnerRegion TEXT,changes TEXT,value INT,contactPoint TEXT,contractID TEXT)");
 var statement = db.prepare("INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?,?)");
 statement.run(item.dateModified,description,data.getJSON().data.items[0].classification.id,
-data.getJSON().data.suppliers[0].name,data.getJSON().data.suppliers[0].identifier.id,data.getJSON().data.suppliers[0].address.region,
-data.getJSON().data.changes.length,
-data.getJSON().data.value.amount,data.getJSON().data.suppliers[0].contactPoint.email,data.getJSON().data.contractID);
+data.getJSON().data.suppliers[0].name,data.getJSON().data.suppliers[0].identifier.id,data.getJSON().data.suppliers[0].address.region,changes,data.getJSON().data.value.amount,data.getJSON().data.suppliers[0].contactPoint.email,data.getJSON().data.contractID);
 statement.finalize();
 });
 			
